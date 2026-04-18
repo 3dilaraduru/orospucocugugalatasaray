@@ -7,153 +7,137 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0d0814;
-  --surface: #160f24;
-  --card: #1e1530;
-  --border: rgba(160,100,255,0.18);
-  --purple: #8b5cf6;
-  --purple-dim: #5b3fa6;
-  --gold: #c9a96e;
-  --red: #e24b4a;
-  --text: #e8dff5;
-  --muted: #7a6a90;
-  --glow: rgba(139,92,246,0.35);
+  --bg: #0d0814; --surface: #160f24; --card: #1e1530;
+  --border: rgba(160,100,255,0.18); --purple: #8b5cf6;
+  --purple-dim: #5b3fa6; --gold: #c9a96e; --red: #e24b4a;
+  --text: #e8dff5; --muted: #7a6a90; --glow: rgba(139,92,246,0.35);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Crimson Text', serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background:
-    radial-gradient(ellipse 60% 40% at 20% 30%, rgba(80,30,120,0.25) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 50% at 80% 70%, rgba(40,10,80,0.3) 0%, transparent 70%);
-  pointer-events: none; z-index: 0;
-}
-#stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-.star { position: absolute; border-radius: 50%; background: #fff; animation: twinkle 3s infinite; }
+body { background: var(--bg); color: var(--text); font-family: 'Crimson Text', serif; min-height: 100vh; overflow-x: hidden; }
+body::before { content:''; position:fixed; inset:0; background: radial-gradient(ellipse 60% 40% at 20% 30%, rgba(80,30,120,0.25) 0%, transparent 70%), radial-gradient(ellipse 50% 50% at 80% 70%, rgba(40,10,80,0.3) 0%, transparent 70%); pointer-events:none; z-index:0; }
+#stars { position:fixed; inset:0; pointer-events:none; z-index:0; }
+.star { position:absolute; border-radius:50%; background:#fff; animation:twinkle 3s infinite; }
 @keyframes twinkle { 0%,100%{opacity:0.15} 50%{opacity:0.85} }
 
-.container { position: relative; z-index: 1; max-width: 480px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+.container { position:relative; z-index:1; max-width:480px; margin:0 auto; padding:1.5rem 1rem 4rem; }
+.logo { text-align:center; margin-bottom:2rem; }
+.logo h1 { font-family:'Cinzel Decorative',serif; font-size:clamp(1.4rem,6vw,2rem); color:var(--gold); text-shadow:0 0 30px rgba(201,169,110,0.5); letter-spacing:2px; }
+.logo p { font-size:0.95rem; color:var(--muted); font-style:italic; margin-top:0.25rem; }
 
-.logo { text-align: center; margin-bottom: 2rem; }
-.logo h1 { font-family: 'Cinzel Decorative', serif; font-size: clamp(1.4rem, 6vw, 2rem); color: var(--gold); text-shadow: 0 0 30px rgba(201,169,110,0.5); letter-spacing: 2px; }
-.logo p { font-size: 0.95rem; color: var(--muted); font-style: italic; margin-top: 0.25rem; }
+.screen { display:none; }
+.screen.active { display:block; }
 
-.screen { display: none; }
-.screen.active { display: block; }
+.char-list { display:flex; flex-direction:column; gap:0.75rem; }
+.char-item { background:var(--card); border:0.5px solid var(--border); border-radius:14px; padding:1rem 1.25rem; display:flex; align-items:center; gap:1rem; cursor:pointer; transition:all 0.2s; position:relative; overflow:hidden; }
+.char-item::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(139,92,246,0.08),transparent); opacity:0; transition:opacity 0.2s; }
+.char-item:hover::before { opacity:1; }
+.char-item:hover { border-color:rgba(139,92,246,0.4); transform:translateY(-1px); }
+.char-item:active { transform:scale(0.98); }
 
-.char-list { display: flex; flex-direction: column; gap: 0.75rem; }
-.char-item {
-  background: var(--card); border: 0.5px solid var(--border); border-radius: 14px;
-  padding: 1rem 1.25rem; display: flex; align-items: center; gap: 1rem;
-  cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;
-}
-.char-item::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(139,92,246,0.08), transparent); opacity: 0; transition: opacity 0.2s; }
-.char-item:hover::before { opacity: 1; }
-.char-item:hover { border-color: rgba(139,92,246,0.4); transform: translateY(-1px); }
-.char-item:active { transform: scale(0.98); }
+.char-avatar { width:56px; height:56px; border-radius:50%; background:var(--surface); border:1px solid var(--border); overflow:hidden; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:1.5rem; }
+.char-avatar img { width:100%; height:100%; object-fit:cover; }
+.char-info { flex:1; min-width:0; }
+.char-name { font-family:'Cinzel Decorative',serif; font-size:0.85rem; color:var(--gold); margin-bottom:0.2rem; }
+.char-desc { font-size:0.82rem; color:var(--muted); font-style:italic; margin-bottom:0.35rem; }
 
-.char-avatar { width: 56px; height: 56px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
-.char-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.char-info { flex: 1; }
-.char-name { font-family: 'Cinzel Decorative', serif; font-size: 0.9rem; color: var(--gold); margin-bottom: 0.2rem; }
-.char-desc { font-size: 0.85rem; color: var(--muted); font-style: italic; }
-.char-arrow { color: var(--purple); font-size: 1.2rem; }
+/* İğne sayacı — liste */
+.char-stats-mini { display:flex; gap:0.5rem; flex-wrap:wrap; }
+.stat-badge { font-size:0.72rem; background:rgba(139,92,246,0.12); border:0.5px solid rgba(139,92,246,0.25); border-radius:6px; padding:0.15rem 0.45rem; color:var(--muted); white-space:nowrap; }
+.stat-badge.needle { border-color:rgba(226,75,74,0.3); color:#e8a0a0; background:rgba(226,75,74,0.08); }
 
-.ritual-header { text-align: center; margin-bottom: 1.5rem; }
-.ritual-header .char-name-big { font-family: 'Cinzel Decorative', serif; font-size: 1.2rem; color: var(--gold); text-shadow: 0 0 20px rgba(201,169,110,0.4); }
-.ritual-header .char-desc-big { font-size: 0.9rem; color: var(--muted); font-style: italic; margin-top: 0.25rem; }
+.char-arrow { color:var(--purple); font-size:1.2rem; flex-shrink:0; }
 
-.objects-strip { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; justify-content: center; }
-.obj-chip { background: var(--surface); border: 0.5px solid var(--border); border-radius: 8px; padding: 0.3rem 0.6rem; display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--muted); }
-.obj-chip img { width: 28px; height: 28px; border-radius: 4px; object-fit: cover; }
+/* Ritüel */
+.ritual-header { text-align:center; margin-bottom:1.25rem; }
+.char-name-big { font-family:'Cinzel Decorative',serif; font-size:1.2rem; color:var(--gold); text-shadow:0 0 20px rgba(201,169,110,0.4); }
+.char-desc-big { font-size:0.9rem; color:var(--muted); font-style:italic; margin-top:0.2rem; }
 
-.doll-wrap { display: flex; justify-content: center; margin: 1.5rem 0 0.75rem; position: relative; }
-.doll-svg { filter: drop-shadow(0 0 16px rgba(139,92,246,0.5)); cursor: pointer; transition: filter 0.2s; }
-.doll-svg:active { filter: drop-shadow(0 0 24px rgba(226,75,74,0.7)); }
-#pin-layer { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 120px; height: 165px; pointer-events: none; }
-.pin { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--red); transform: translate(-50%, -50%); box-shadow: 0 0 8px var(--red); animation: pinAppear 0.3s ease; }
+/* İstatistik kutusu */
+.stats-box { background:rgba(0,0,0,0.3); border:0.5px solid rgba(160,100,255,0.15); border-radius:12px; padding:0.85rem 1rem; margin-bottom:1rem; }
+.stats-box-title { font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:0.6rem; }
+.stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.4rem; }
+.stat-item { display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,0.03); border-radius:8px; padding:0.35rem 0.6rem; }
+.stat-label { font-size:0.82rem; color:var(--muted); }
+.stat-val { font-size:0.95rem; color:var(--gold); font-weight:600; }
+.stat-item.needle-stat { grid-column:1/-1; background:rgba(226,75,74,0.07); }
+.stat-item.needle-stat .stat-val { color:#e8a0a0; font-size:1.05rem; }
+
+.objects-strip { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1rem; justify-content:center; }
+.obj-chip { background:var(--surface); border:0.5px solid var(--border); border-radius:8px; padding:0.3rem 0.6rem; display:flex; align-items:center; gap:0.4rem; font-size:0.8rem; color:var(--muted); }
+.obj-chip img { width:28px; height:28px; border-radius:4px; object-fit:cover; }
+
+.doll-wrap { display:flex; justify-content:center; margin:1.25rem 0 0.5rem; position:relative; }
+.doll-svg { filter:drop-shadow(0 0 16px rgba(139,92,246,0.5)); cursor:pointer; transition:filter 0.2s; }
+.doll-svg:active { filter:drop-shadow(0 0 24px rgba(226,75,74,0.7)); }
+#pin-layer { position:absolute; top:0; left:50%; transform:translateX(-50%); width:120px; height:165px; pointer-events:none; }
+.pin { position:absolute; width:10px; height:10px; border-radius:50%; background:var(--red); transform:translate(-50%,-50%); box-shadow:0 0 8px var(--red); animation:pinAppear 0.3s ease; }
 @keyframes pinAppear { 0%{transform:translate(-50%,-50%) scale(3);opacity:0} 100%{transform:translate(-50%,-50%) scale(1);opacity:1} }
 
-.tap-hint { text-align: center; font-size: 0.8rem; color: var(--muted); font-style: italic; margin-bottom: 1rem; }
+.tap-hint { text-align:center; font-size:0.8rem; color:var(--muted); font-style:italic; margin-bottom:1rem; }
 
-.power-section { margin-bottom: 1rem; }
-.power-label-row { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--muted); margin-bottom: 0.4rem; }
-.power-label-row span:last-child { color: var(--purple); font-weight: 600; }
-.power-bar { width: 100%; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
-.power-fill { height: 100%; background: linear-gradient(90deg, var(--purple-dim), var(--purple)); width: 0%; transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); border-radius: 4px; }
+.power-section { margin-bottom:1rem; }
+.power-label-row { display:flex; justify-content:space-between; font-size:0.85rem; color:var(--muted); margin-bottom:0.4rem; }
+.power-label-row span:last-child { color:var(--purple); font-weight:600; }
+.power-bar { width:100%; height:8px; background:rgba(255,255,255,0.06); border-radius:4px; overflow:hidden; }
+.power-fill { height:100%; background:linear-gradient(90deg,var(--purple-dim),var(--purple)); width:0%; transition:width 0.4s cubic-bezier(0.34,1.56,0.64,1); border-radius:4px; }
 
-.spells-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 1rem; }
-.spell-btn { padding: 0.65rem 0.5rem; border-radius: 10px; border: 0.5px solid var(--border); background: var(--surface); color: var(--gold); font-family: 'Crimson Text', serif; font-size: 0.95rem; cursor: pointer; transition: all 0.18s; text-align: center; }
-.spell-btn:not(:disabled):hover { background: rgba(139,92,246,0.2); border-color: var(--purple); color: #e0d4ff; box-shadow: 0 0 12px var(--glow); }
-.spell-btn:disabled { opacity: 0.3; cursor: default; }
-.spell-btn.fired { background: rgba(139,92,246,0.3); border-color: var(--purple); color: #e0d4ff; }
+.spells-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-bottom:1rem; }
+.spell-btn { padding:0.65rem 0.5rem; border-radius:10px; border:0.5px solid var(--border); background:var(--surface); color:var(--gold); font-family:'Crimson Text',serif; font-size:0.95rem; cursor:pointer; transition:all 0.18s; text-align:center; }
+.spell-btn:not(:disabled):hover { background:rgba(139,92,246,0.2); border-color:var(--purple); color:#e0d4ff; box-shadow:0 0 12px var(--glow); }
+.spell-btn:disabled { opacity:0.3; cursor:default; }
+.spell-btn.fired { background:rgba(139,92,246,0.3); border-color:var(--purple); color:#e0d4ff; }
 
-.ritual-log { background: rgba(0,0,0,0.35); border: 0.5px solid rgba(160,100,255,0.15); border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.95rem; color: var(--gold); font-style: italic; text-align: center; min-height: 44px; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+.ritual-log { background:rgba(0,0,0,0.35); border:0.5px solid rgba(160,100,255,0.15); border-radius:10px; padding:0.75rem 1rem; font-size:0.95rem; color:var(--gold); font-style:italic; text-align:center; min-height:44px; display:flex; align-items:center; justify-content:center; }
 
-.back-btn { display: flex; align-items: center; gap: 0.4rem; background: none; border: none; color: var(--muted); font-family: 'Crimson Text', serif; font-size: 0.95rem; cursor: pointer; margin-bottom: 1.25rem; padding: 0; transition: color 0.15s; }
-.back-btn:hover { color: var(--text); }
+.back-btn { display:flex; align-items:center; gap:0.4rem; background:none; border:none; color:var(--muted); font-family:'Crimson Text',serif; font-size:0.95rem; cursor:pointer; margin-bottom:1.25rem; padding:0; transition:color 0.15s; }
+.back-btn:hover { color:var(--text); }
 
-/* LOADING */
-.loading { text-align: center; padding: 3rem 1rem; color: var(--muted); font-style: italic; }
-.loading-spinner { width: 32px; height: 32px; border: 2px solid var(--border); border-top-color: var(--purple); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1rem; }
-@keyframes spin { to { transform: rotate(360deg); } }
+.loading { text-align:center; padding:3rem 1rem; color:var(--muted); font-style:italic; }
+.loading-spinner { width:32px; height:32px; border:2px solid var(--border); border-top-color:var(--purple); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 1rem; }
+@keyframes spin { to{transform:rotate(360deg)} }
 
-/* ADMİN */
-#admin-toggle { position: fixed; bottom: 1rem; right: 1rem; width: 42px; height: 42px; border-radius: 50%; background: var(--surface); border: 0.5px solid var(--border); color: var(--muted); font-size: 1.1rem; cursor: pointer; z-index: 100; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
-#admin-toggle:hover { border-color: var(--purple); color: var(--purple); }
-
-.admin-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; overflow-y: auto; padding: 1rem; }
-.admin-overlay.open { display: block; }
-.admin-panel { background: var(--card); border: 0.5px solid var(--border); border-radius: 20px; padding: 1.5rem; max-width: 480px; margin: 2rem auto; }
-.admin-panel h2 { font-family: 'Cinzel Decorative', serif; font-size: 1.1rem; color: var(--gold); margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; }
-.admin-close { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.3rem; line-height: 1; }
-.admin-form { display: flex; flex-direction: column; gap: 0.75rem; }
-.form-field { display: flex; flex-direction: column; gap: 0.3rem; }
-.form-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
-.form-input { background: var(--surface); border: 0.5px solid var(--border); border-radius: 8px; padding: 0.55rem 0.85rem; color: var(--text); font-family: 'Crimson Text', serif; font-size: 1rem; outline: none; transition: border-color 0.15s; }
-.form-input:focus { border-color: var(--purple); }
-
-.upload-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-.upload-slot { background: var(--surface); border: 0.5px dashed rgba(160,100,255,0.3); border-radius: 10px; padding: 0.6rem; cursor: pointer; text-align: center; transition: all 0.15s; position: relative; overflow: hidden; min-height: 70px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem; }
-.upload-slot:hover { border-color: var(--purple); background: rgba(83,74,183,0.1); }
-.upload-slot.has-img { border-style: solid; border-color: rgba(139,92,246,0.5); }
-.upload-slot input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-.upload-slot img { width: 40px; height: 40px; border-radius: 6px; object-fit: cover; display: none; }
-.upload-slot.has-img img { display: block; }
-.upload-slot.has-img .upload-placeholder { display: none; }
-.upload-placeholder { pointer-events: none; }
-.upload-placeholder .up-icon { font-size: 1.3rem; }
-.upload-placeholder .up-label { font-size: 0.75rem; color: var(--muted); }
-
-.add-btn { padding: 0.7rem; background: rgba(139,92,246,0.2); border: 0.5px solid var(--purple); border-radius: 10px; color: #e0d4ff; font-family: 'Crimson Text', serif; font-size: 1rem; cursor: pointer; transition: all 0.15s; }
-.add-btn:hover { background: rgba(139,92,246,0.35); }
-.add-btn:disabled { opacity: 0.5; cursor: default; }
-
-.section-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin: 1rem 0 0.5rem; }
-.admin-char-list { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
-.admin-char-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.75rem; background: var(--surface); border-radius: 10px; border: 0.5px solid var(--border); }
-.admin-char-row .name { flex: 1; font-size: 0.95rem; color: var(--gold); }
-.del-btn { background: none; border: none; color: var(--red); cursor: pointer; font-size: 1rem; opacity: 0.7; transition: opacity 0.15s; }
-.del-btn:hover { opacity: 1; }
-
-.empty { text-align: center; padding: 2.5rem 1rem; color: var(--muted); font-style: italic; font-size: 1rem; }
-
-#fx-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: 0; }
+/* Admin */
+#admin-toggle { position:fixed; bottom:1rem; right:1rem; width:42px; height:42px; border-radius:50%; background:var(--surface); border:0.5px solid var(--border); color:var(--muted); font-size:1.1rem; cursor:pointer; z-index:100; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
+#admin-toggle:hover { border-color:var(--purple); color:var(--purple); }
+.admin-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:200; overflow-y:auto; padding:1rem; }
+.admin-overlay.open { display:block; }
+.admin-panel { background:var(--card); border:0.5px solid var(--border); border-radius:20px; padding:1.5rem; max-width:480px; margin:2rem auto; }
+.admin-panel h2 { font-family:'Cinzel Decorative',serif; font-size:1.1rem; color:var(--gold); margin-bottom:1.25rem; display:flex; justify-content:space-between; align-items:center; }
+.admin-close { background:none; border:none; color:var(--muted); cursor:pointer; font-size:1.3rem; }
+.admin-form { display:flex; flex-direction:column; gap:0.75rem; }
+.form-field { display:flex; flex-direction:column; gap:0.3rem; }
+.form-label { font-size:0.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+.form-input { background:var(--surface); border:0.5px solid var(--border); border-radius:8px; padding:0.55rem 0.85rem; color:var(--text); font-family:'Crimson Text',serif; font-size:1rem; outline:none; transition:border-color 0.15s; }
+.form-input:focus { border-color:var(--purple); }
+.upload-row { display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; }
+.upload-slot { background:var(--surface); border:0.5px dashed rgba(160,100,255,0.3); border-radius:10px; padding:0.6rem; cursor:pointer; text-align:center; transition:all 0.15s; position:relative; overflow:hidden; min-height:70px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.25rem; }
+.upload-slot:hover { border-color:var(--purple); background:rgba(83,74,183,0.1); }
+.upload-slot.has-img { border-style:solid; border-color:rgba(139,92,246,0.5); }
+.upload-slot input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; }
+.upload-slot img { width:40px; height:40px; border-radius:6px; object-fit:cover; display:none; }
+.upload-slot.has-img img { display:block; }
+.upload-slot.has-img .upload-placeholder { display:none; }
+.upload-placeholder { pointer-events:none; }
+.up-icon { font-size:1.3rem; }
+.up-label { font-size:0.75rem; color:var(--muted); }
+.add-btn { padding:0.7rem; background:rgba(139,92,246,0.2); border:0.5px solid var(--purple); border-radius:10px; color:#e0d4ff; font-family:'Crimson Text',serif; font-size:1rem; cursor:pointer; transition:all 0.15s; }
+.add-btn:hover { background:rgba(139,92,246,0.35); }
+.add-btn:disabled { opacity:0.5; cursor:default; }
+.section-label { font-size:0.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin:1rem 0 0.5rem; }
+.admin-char-list { display:flex; flex-direction:column; gap:0.5rem; }
+.admin-char-row { display:flex; align-items:center; gap:0.75rem; padding:0.6rem 0.75rem; background:var(--surface); border-radius:10px; border:0.5px solid var(--border); }
+.admin-char-row .name { flex:1; font-size:0.95rem; color:var(--gold); }
+.admin-char-row .needle-count { font-size:0.8rem; color:#e8a0a0; }
+.del-btn { background:none; border:none; color:var(--red); cursor:pointer; font-size:1rem; opacity:0.7; }
+.del-btn:hover { opacity:1; }
+.empty { text-align:center; padding:2rem 1rem; color:var(--muted); font-style:italic; }
+.status-msg { text-align:center; font-size:0.8rem; color:var(--purple); font-style:italic; min-height:1.2rem; }
+#fx-overlay { position:fixed; inset:0; pointer-events:none; z-index:50; opacity:0; }
 @keyframes flashAnim { 0%{opacity:0;background:radial-gradient(ellipse at center,rgba(139,92,246,0.3),transparent)} 40%{opacity:1} 100%{opacity:0} }
-.flash { animation: flashAnim 0.5s ease; }
-
-.status-msg { text-align: center; font-size: 0.8rem; color: var(--purple); margin-top: 0.5rem; font-style: italic; min-height: 1.2rem; }
+.flash { animation:flashAnim 0.5s ease; }
 </style>
 </head>
 <body>
-
 <div id="stars"></div>
 <div id="fx-overlay"></div>
 
@@ -163,7 +147,7 @@ body::before {
     <p>Karanlık ritüelin kapıları açıldı...</p>
   </div>
 
-  <!-- EKRAN 1: Liste -->
+  <!-- Liste -->
   <div class="screen active" id="screen-list">
     <div id="list-loading" class="loading">
       <div class="loading-spinner"></div>
@@ -175,14 +159,43 @@ body::before {
     </div>
   </div>
 
-  <!-- EKRAN 2: Ritüel -->
+  <!-- Ritüel -->
   <div class="screen" id="screen-ritual">
     <button class="back-btn" onclick="goBack()">&#8592; Karakterlere Dön</button>
     <div class="ritual-header">
       <div class="char-name-big" id="ritual-name"></div>
       <div class="char-desc-big" id="ritual-desc"></div>
     </div>
+
+    <!-- Canlı istatistik kutusu -->
+    <div class="stats-box">
+      <div class="stats-box-title">&#128202; Topluluk İstatistikleri</div>
+      <div class="stats-grid">
+        <div class="stat-item needle-stat">
+          <span class="stat-label">&#129748; Toplam İğne</span>
+          <span class="stat-val" id="stat-needles">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">&#128336; Yavaşlat</span>
+          <span class="stat-val" id="stat-slow">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">&#128300; Şaşırt</span>
+          <span class="stat-val" id="stat-confuse">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">&#128564; Uyu</span>
+          <span class="stat-val" id="stat-sleep">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">&#128128; Baron Samedi</span>
+          <span class="stat-val" id="stat-loa">0</span>
+        </div>
+      </div>
+    </div>
+
     <div class="objects-strip" id="ritual-objects"></div>
+
     <div class="doll-wrap">
       <svg class="doll-svg" id="doll-svg" width="120" height="165" viewBox="0 0 80 110" xmlns="http://www.w3.org/2000/svg" onclick="stickNeedle(event)">
         <ellipse cx="40" cy="15" rx="14" ry="14" fill="#6B4C3B" stroke="#3d2b1f" stroke-width="1"/>
@@ -198,22 +211,25 @@ body::before {
       </svg>
       <div id="pin-layer"></div>
     </div>
+
     <p class="tap-hint">Bebeğe dokun — iğneyi sapıt</p>
+
     <div class="power-section">
       <div class="power-label-row"><span>Karanlık Güç</span><span id="power-pct">0%</span></div>
       <div class="power-bar"><div class="power-fill" id="power-fill"></div></div>
     </div>
+
     <div class="spells-grid">
       <button class="spell-btn" id="sp-slow" onclick="castSpell('slow')" disabled>&#128336; Yavaşlat</button>
       <button class="spell-btn" id="sp-confuse" onclick="castSpell('confuse')" disabled>&#128300; Şaşırt</button>
       <button class="spell-btn" id="sp-sleep" onclick="castSpell('sleep')" disabled>&#128564; Uyu</button>
       <button class="spell-btn" id="sp-loa" onclick="castSpell('loa')" disabled>&#128128; Baron Samedi</button>
     </div>
+
     <div class="ritual-log" id="ritual-log">Bebeğe dokunarak ritüeli başlat...</div>
   </div>
 </div>
 
-<!-- Admin -->
 <button id="admin-toggle" onclick="toggleAdmin()" title="Admin">&#9881;</button>
 
 <div class="admin-overlay" id="admin-overlay">
@@ -231,22 +247,10 @@ body::before {
       <div class="form-field">
         <label class="form-label">Obje Görselleri</label>
         <div class="upload-row">
-          <div class="upload-slot" id="us-0">
-            <input type="file" accept="image/*" onchange="handleUpload(0,this)">
-            <img id="ui-0"><div class="upload-placeholder"><div class="up-icon">&#128247;</div><div class="up-label">Saç / Başlık</div></div>
-          </div>
-          <div class="upload-slot" id="us-1">
-            <input type="file" accept="image/*" onchange="handleUpload(1,this)">
-            <img id="ui-1"><div class="upload-placeholder"><div class="up-icon">&#128509;</div><div class="up-label">Kıyafet</div></div>
-          </div>
-          <div class="upload-slot" id="us-2">
-            <input type="file" accept="image/*" onchange="handleUpload(2,this)">
-            <img id="ui-2"><div class="upload-placeholder"><div class="up-icon">&#128141;</div><div class="up-label">Aksesuar</div></div>
-          </div>
-          <div class="upload-slot" id="us-3">
-            <input type="file" accept="image/*" onchange="handleUpload(3,this)">
-            <img id="ui-3"><div class="upload-placeholder"><div class="up-icon">&#127873;</div><div class="up-label">Ekstra</div></div>
-          </div>
+          <div class="upload-slot" id="us-0"><input type="file" accept="image/*" onchange="handleUpload(0,this)"><img id="ui-0"><div class="upload-placeholder"><div class="up-icon">&#128247;</div><div class="up-label">Saç / Başlık</div></div></div>
+          <div class="upload-slot" id="us-1"><input type="file" accept="image/*" onchange="handleUpload(1,this)"><img id="ui-1"><div class="upload-placeholder"><div class="up-icon">&#128509;</div><div class="up-label">Kıyafet</div></div></div>
+          <div class="upload-slot" id="us-2"><input type="file" accept="image/*" onchange="handleUpload(2,this)"><img id="ui-2"><div class="upload-placeholder"><div class="up-icon">&#128141;</div><div class="up-label">Aksesuar</div></div></div>
+          <div class="upload-slot" id="us-3"><input type="file" accept="image/*" onchange="handleUpload(3,this)"><img id="ui-3"><div class="upload-placeholder"><div class="up-icon">&#127873;</div><div class="up-label">Ekstra</div></div></div>
         </div>
       </div>
       <button class="add-btn" id="add-btn" onclick="addCharacter()">+ Karakteri Ekle</button>
@@ -257,10 +261,9 @@ body::before {
   </div>
 </div>
 
-<!-- Firebase -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCdKukdlvHZkUQ0l5hRM8hkPwsGvasRf6E",
@@ -277,88 +280,108 @@ const colRef = collection(db, "characters");
 
 let characters = [];
 let currentChar = null;
+let currentDocRef = null;
 let power = 0;
-let uploadData = [null, null, null, null];
+let uploadData = [null,null,null,null];
 
 // Stars
-(function() {
+(function(){
   const c = document.getElementById('stars');
-  for (let i = 0; i < 60; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
-    const sz = Math.random() * 2 + 0.5;
-    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;width:${sz}px;height:${sz}px;animation-delay:${Math.random()*3}s;animation-duration:${2+Math.random()*2}s`;
+  for(let i=0;i<60;i++){
+    const s=document.createElement('div'); s.className='star';
+    const sz=Math.random()*2+0.5;
+    s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${sz}px;height:${sz}px;animation-delay:${Math.random()*3}s;animation-duration:${2+Math.random()*2}s`;
     c.appendChild(s);
   }
 })();
 
 // Realtime listener
-onSnapshot(colRef, (snapshot) => {
-  characters = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+onSnapshot(colRef, snap => {
+  characters = snap.docs.map(d => ({ id: d.id, ...d.data() }));
   renderList();
   renderAdminList();
   document.getElementById('list-loading').style.display = 'none';
   document.getElementById('char-list-wrap').style.display = 'block';
+
+  // Eğer ritüel ekranındaysak istatistikleri güncelle
+  if (currentChar) {
+    const updated = characters.find(c => c.id === currentChar.id);
+    if (updated) { currentChar = updated; updateStatsBox(); }
+  }
 });
 
 function renderList() {
   const list = document.getElementById('char-list');
   const empty = document.getElementById('empty-msg');
-  if (characters.length === 0) {
-    empty.style.display = 'block';
-    list.innerHTML = '';
-    return;
-  }
+  if (characters.length === 0) { empty.style.display='block'; list.innerHTML=''; return; }
   empty.style.display = 'none';
-  list.innerHTML = characters.map((ch, i) => `
+  list.innerHTML = characters.map((ch,i) => {
+    const needles = ch.needles || 0;
+    const spells = ch.spells || {};
+    const totalSpells = (spells.slow||0)+(spells.confuse||0)+(spells.sleep||0)+(spells.loa||0);
+    return `
     <div class="char-item" onclick="window.openRitual(${i})">
-      <div class="char-avatar">
-        ${ch.images && ch.images[0] ? `<img src="${ch.images[0]}">` : '&#128100;'}
-      </div>
+      <div class="char-avatar">${ch.images&&ch.images[0]?`<img src="${ch.images[0]}">`:'&#128100;'}</div>
       <div class="char-info">
         <div class="char-name">${ch.name}</div>
-        <div class="char-desc">${ch.desc || 'Büyüye hazır...'}</div>
+        <div class="char-desc">${ch.desc||'Büyüye hazır...'}</div>
+        <div class="char-stats-mini">
+          <span class="stat-badge needle">&#129748; ${needles} iğne</span>
+          <span class="stat-badge">&#10024; ${totalSpells} büyü</span>
+        </div>
       </div>
       <div class="char-arrow">&#8250;</div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 window.openRitual = function(i) {
   currentChar = characters[i];
+  currentDocRef = doc(db, 'characters', currentChar.id);
   power = 0;
   document.getElementById('ritual-name').textContent = currentChar.name;
   document.getElementById('ritual-desc').textContent = currentChar.desc || '';
   document.getElementById('pin-layer').innerHTML = '';
   document.getElementById('ritual-log').textContent = 'Bebeğe dokunarak ritüeli başlat...';
   updatePower();
+  updateStatsBox();
 
   const labels = ['Saç','Kıyafet','Aksesuar','Ekstra'];
-  const imgs = (currentChar.images || []).filter(Boolean);
-  document.getElementById('ritual-objects').innerHTML = imgs.map((src, i) =>
+  const imgs = (currentChar.images||[]).filter(Boolean);
+  document.getElementById('ritual-objects').innerHTML = imgs.map((src,i)=>
     `<div class="obj-chip"><img src="${src}"><span>${labels[i]||'Obje'}</span></div>`
   ).join('');
 
   showScreen('screen-ritual');
 }
 
-window.goBack = function() { showScreen('screen-list'); }
+function updateStatsBox() {
+  const needles = currentChar.needles || 0;
+  const spells = currentChar.spells || {};
+  document.getElementById('stat-needles').textContent = needles;
+  document.getElementById('stat-slow').textContent = spells.slow || 0;
+  document.getElementById('stat-confuse').textContent = spells.confuse || 0;
+  document.getElementById('stat-sleep').textContent = spells.sleep || 0;
+  document.getElementById('stat-loa').textContent = spells.loa || 0;
+}
+
+window.goBack = function() { currentChar = null; showScreen('screen-list'); }
 
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-window.stickNeedle = function(e) {
+window.stickNeedle = async function(e) {
   const svg = document.getElementById('doll-svg');
   const rect = svg.getBoundingClientRect();
   const pin = document.createElement('div');
   pin.className = 'pin';
-  pin.style.left = (e.clientX - rect.left) + 'px';
-  pin.style.top = (e.clientY - rect.top) + 'px';
+  pin.style.left = (e.clientX-rect.left)+'px';
+  pin.style.top = (e.clientY-rect.top)+'px';
   document.getElementById('pin-layer').appendChild(pin);
 
-  const bonus = 8 + ((currentChar.images || []).filter(Boolean).length * 4);
+  const bonus = 8 + ((currentChar.images||[]).filter(Boolean).length*4);
   addPower(bonus);
 
   const msgs = [
@@ -369,125 +392,119 @@ window.stickNeedle = function(e) {
     'Baron Samedi gülümsüyor...',
     'Objeler büyüyü güçlendiriyor...'
   ];
-  setLog(msgs[Math.floor(Math.random() * msgs.length)]);
+  setLog(msgs[Math.floor(Math.random()*msgs.length)]);
   flash();
+
+  // Firebase'e iğne sayısını artır
+  try { await updateDoc(currentDocRef, { needles: increment(1) }); } catch(e) {}
 }
 
-function addPower(v) { power = Math.min(100, power + v); updatePower(); }
+function addPower(v) { power=Math.min(100,power+v); updatePower(); }
 
 function updatePower() {
-  document.getElementById('power-fill').style.width = power + '%';
-  document.getElementById('power-pct').textContent = Math.round(power) + '%';
-  document.getElementById('sp-slow').disabled = power < 20;
-  document.getElementById('sp-confuse').disabled = power < 35;
-  document.getElementById('sp-sleep').disabled = power < 55;
-  document.getElementById('sp-loa').disabled = power < 85;
+  document.getElementById('power-fill').style.width=power+'%';
+  document.getElementById('power-pct').textContent=Math.round(power)+'%';
+  document.getElementById('sp-slow').disabled=power<20;
+  document.getElementById('sp-confuse').disabled=power<35;
+  document.getElementById('sp-sleep').disabled=power<55;
+  document.getElementById('sp-loa').disabled=power<85;
 }
 
-window.castSpell = function(id) {
-  const costs = { slow:20, confuse:35, sleep:55, loa:85 };
-  const msgs = {
-    slow: `${currentChar.name} yavaşladı! Adımları ağırlaşıyor...`,
-    confuse: `${currentChar.name} şaşırdı! Ne yapacağını bilmiyor...`,
-    sleep: `${currentChar.name} derin bir uykuya daldı...`,
-    loa: `Baron Samedi sahneye çıktı! ${currentChar.name} üzerinde ölüm enerjisi...`
+window.castSpell = async function(id) {
+  const costs={slow:20,confuse:35,sleep:55,loa:85};
+  const msgs={
+    slow:`${currentChar.name} yavaşladı! Adımları ağırlaşıyor...`,
+    confuse:`${currentChar.name} şaşırdı! Ne yapacağını bilmiyor...`,
+    sleep:`${currentChar.name} derin bir uykuya daldı...`,
+    loa:`Baron Samedi sahneye çıktı! ${currentChar.name} üzerinde ölüm enerjisi...`
   };
-  if (power < costs[id]) return;
-  power -= costs[id];
+  if(power<costs[id]) return;
+  power-=costs[id];
   updatePower();
   setLog(msgs[id]);
-  const btn = document.getElementById('sp-' + id);
+  const btn=document.getElementById('sp-'+id);
   btn.classList.add('fired');
-  setTimeout(() => btn.classList.remove('fired'), 1500);
+  setTimeout(()=>btn.classList.remove('fired'),1500);
   flash();
+
+  // Firebase'e büyü sayısını artır
+  try { await updateDoc(currentDocRef, { [`spells.${id}`]: increment(1) }); } catch(e) {}
 }
 
 function setLog(msg) {
-  const el = document.getElementById('ritual-log');
-  el.style.opacity = 0;
-  setTimeout(() => { el.textContent = msg; el.style.opacity = 1; }, 150);
+  const el=document.getElementById('ritual-log');
+  el.style.opacity=0;
+  setTimeout(()=>{el.textContent=msg;el.style.opacity=1;},150);
 }
 
 function flash() {
-  const el = document.getElementById('fx-overlay');
-  el.classList.remove('flash');
-  void el.offsetWidth;
-  el.classList.add('flash');
+  const el=document.getElementById('fx-overlay');
+  el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
 }
 
-// Admin
-window.toggleAdmin = function() {
-  document.getElementById('admin-overlay').classList.toggle('open');
-}
+window.toggleAdmin = function() { document.getElementById('admin-overlay').classList.toggle('open'); }
 
-window.handleUpload = function(idx, input) {
-  const file = input.files[0];
-  if (!file) return;
-  if (file.size > 500000) { alert('Görsel çok büyük! 500KB altı bir görsel seç.'); return; }
-  const reader = new FileReader();
-  reader.onload = e => {
-    uploadData[idx] = e.target.result;
-    document.getElementById('ui-' + idx).src = e.target.result;
-    document.getElementById('us-' + idx).classList.add('has-img');
+window.handleUpload = function(idx,input) {
+  const file=input.files[0]; if(!file) return;
+  if(file.size>500000){alert('500KB altı görsel seç!');return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    uploadData[idx]=e.target.result;
+    document.getElementById('ui-'+idx).src=e.target.result;
+    document.getElementById('us-'+idx).classList.add('has-img');
   };
   reader.readAsDataURL(file);
 }
 
 window.addCharacter = async function() {
-  const name = document.getElementById('a-name').value.trim();
-  if (!name) { alert('Karakter adı gerekli!'); return; }
-  const desc = document.getElementById('a-desc').value.trim();
-
-  const btn = document.getElementById('add-btn');
-  btn.disabled = true;
-  btn.textContent = 'Kaydediliyor...';
-  setStatus('Firebase\'e yükleniyor...');
-
+  const name=document.getElementById('a-name').value.trim();
+  if(!name){alert('Karakter adı gerekli!');return;}
+  const desc=document.getElementById('a-desc').value.trim();
+  const btn=document.getElementById('add-btn');
+  btn.disabled=true; btn.textContent='Kaydediliyor...';
+  setStatus("Firebase'e yükleniyor...");
   try {
-    await addDoc(colRef, { name, desc, images: [...uploadData], createdAt: Date.now() });
-
-    document.getElementById('a-name').value = '';
-    document.getElementById('a-desc').value = '';
-    uploadData = [null, null, null, null];
-    [0,1,2,3].forEach(i => {
-      document.getElementById('ui-'+i).src = '';
+    await addDoc(colRef,{
+      name, desc,
+      images:[...uploadData],
+      needles: 0,
+      spells: { slow:0, confuse:0, sleep:0, loa:0 },
+      createdAt: Date.now()
+    });
+    document.getElementById('a-name').value='';
+    document.getElementById('a-desc').value='';
+    uploadData=[null,null,null,null];
+    [0,1,2,3].forEach(i=>{
+      document.getElementById('ui-'+i).src='';
       document.getElementById('us-'+i).classList.remove('has-img');
     });
     setStatus('Karakter eklendi!');
-    setTimeout(() => setStatus(''), 2000);
-  } catch(e) {
-    alert('Hata: ' + e.message);
-  }
-
-  btn.disabled = false;
-  btn.textContent = '+ Karakteri Ekle';
+    setTimeout(()=>setStatus(''),2000);
+  } catch(e) { alert('Hata: '+e.message); }
+  btn.disabled=false; btn.textContent='+ Karakteri Ekle';
 }
 
 window.deleteChar = async function(id) {
-  if (!confirm('Bu karakteri sil?')) return;
-  await deleteDoc(doc(db, 'characters', id));
+  if(!confirm('Bu karakteri sil?')) return;
+  await deleteDoc(doc(db,'characters',id));
 }
 
 function renderAdminList() {
-  const el = document.getElementById('admin-char-list');
-  if (characters.length === 0) {
-    el.innerHTML = '<div class="empty" style="padding:1rem;">Henüz karakter yok.</div>';
-    return;
-  }
-  el.innerHTML = characters.map(ch => `
+  const el=document.getElementById('admin-char-list');
+  if(characters.length===0){el.innerHTML='<div class="empty" style="padding:1rem;">Henüz karakter yok.</div>';return;}
+  el.innerHTML=characters.map(ch=>`
     <div class="admin-char-row">
       <div class="char-avatar" style="width:36px;height:36px;font-size:1rem;">
-        ${ch.images && ch.images[0] ? `<img src="${ch.images[0]}" style="width:100%;height:100%;object-fit:cover;">` : '&#128100;'}
+        ${ch.images&&ch.images[0]?`<img src="${ch.images[0]}" style="width:100%;height:100%;object-fit:cover;">`:'&#128100;'}
       </div>
       <div class="name">${ch.name}</div>
+      <span class="needle-count">&#129748; ${ch.needles||0}</span>
       <button class="del-btn" onclick="window.deleteChar('${ch.id}')">&#128465;</button>
     </div>
   `).join('');
 }
 
-function setStatus(msg) {
-  document.getElementById('status-msg').textContent = msg;
-}
+function setStatus(msg){ document.getElementById('status-msg').textContent=msg; }
 </script>
 </body>
 </html>
